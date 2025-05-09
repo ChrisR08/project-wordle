@@ -1,15 +1,53 @@
-import React from 'react';
+import React from "react";
 
-import { sample } from '../../utils';
-import { WORDS } from '../../data';
+import { sample } from "../../utils";
+import { WORDS } from "../../data";
 
-// Pick a random word on every pageload.
-const answer = sample(WORDS);
-// To make debugging easier, we'll log the solution in the console.
-console.info({ answer });
+import GuessInput from "../GuessInput";
+import GuessGrid from "../GuessGrid/";
+import Banner from "../Banner/";
 
 function Game() {
-  return <>Put a game here!</>;
+    const [guesses, setGuesses] = React.useState([]);
+    const [isCorrect, setIsCorrect] = React.useState(false);
+    // Pick a random word on every pageload.
+    const [answer, setAnswer] = React.useState(sample(WORDS));
+    console.log(answer);
+
+    function handleSubmitGuess(newGuess) {
+        const nextGuesses = [...guesses, newGuess];
+        setGuesses(nextGuesses);
+
+        if (newGuess === answer) {
+            setIsCorrect(true);
+        }
+    }
+
+    function handleReset() {
+        setGuesses([]);
+        setIsCorrect(false);
+        setAnswer(sample(WORDS));
+    }
+
+    const disabled = isCorrect || guesses.length >= 6 ? true : null;
+
+    return (
+        <>
+            <GuessGrid guesses={guesses} answer={answer} />
+            <GuessInput
+                handleSubmitGuess={handleSubmitGuess}
+                disabled={disabled}
+            />
+            {
+                <Banner
+                    isCorrect={isCorrect}
+                    numOfGuesses={guesses.length}
+                    answer={answer}
+                    handleReset={handleReset}
+                />
+            }
+        </>
+    );
 }
 
 export default Game;
