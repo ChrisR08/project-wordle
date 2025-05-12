@@ -5,6 +5,11 @@ const title = `Enter a 5 letter word`;
 function GuessInput({ handleSubmitGuess, disabled }) {
     const [input, setInput] = React.useState(``);
 
+    const inputRef = React.useRef();
+    React.useEffect(() => {
+        inputRef.current.focus();
+    }, [disabled]);
+
     return (
         <form
             className="guess-input-wrapper"
@@ -27,7 +32,7 @@ function GuessInput({ handleSubmitGuess, disabled }) {
                 value={input}
                 onChange={(e) => setInput(e.target.value.toUpperCase())}
                 disabled={disabled}
-                autoFocus
+                ref={inputRef}
             />
         </form>
     );
