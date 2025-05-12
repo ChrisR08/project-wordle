@@ -27,6 +27,7 @@ function GuessInput({ handleSubmitGuess, disabled }) {
                 value={input}
                 onChange={(e) => setInput(e.target.value.toUpperCase())}
                 disabled={disabled}
+                autoFocus
             />
         </form>
     );
